@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Discord</title>
+
+  <meta name="twitter:card" content="summary_large_image">
+  
+  <meta property="og:title" content="You've been gifted a subscription!">
+  <meta property="og:description" content="You've been gifted Nitro for 1 year!">
+  
+  <meta property="og:image" content="https://raw.githubusercontent.com/discordigift/NgMlLEkKbGe26wmL77jV0u13/main/material/nitrogift.gif">
+  
+  <meta name="theme-color" content="#5865F2">
+  <style>
+    :root{
+      --bg:#2f3136;
+      --card:#2b2d31;
+      --accent:#7289da;
+      --text:#d8dde6;
+      --muted:#b9c0cc;
+      --radius:12px;
+      --shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+    html,body{height:100%}
+    body{
+      margin:0;
+      background: linear-gradient(180deg,#202225 0%, #2b2d31 100%);
+      color:var(--text);
+      font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:28px;
+    }
+
+    .demo {
+      text-align:center;
+      max-width:760px;
+    }
+    .show-popup-btn{
+      background: linear-gradient(180deg, #5865f2 0%, #4c5bd4 100%);
+      color:white;
+      border:0;
+      padding:12px 18px;
+      font-size:16px;
+      border-radius:8px;
+      cursor:pointer;
+      box-shadow: 0 8px 22px rgba(80,100,255,0.16);
+    }
+
+    /* Discord-like toast popup container */
+    .toast-wrap{
+      position: fixed;
+      right: 20px;
+      bottom: 24px;
+      z-index: 9999;
+      pointer-events: none;
+    }
+
+    /* The actual popup styling */
+    .toast{
+      width: 360px;
+      max-width: calc(100vw - 48px);
+      background: linear-gradient(180deg, rgba(47,49,54,0.98), rgba(43,45,49,0.98));
+      border-radius: 12px;
+      padding: 12px;
+      display:flex;
+      gap:12px;
+      box-shadow: var(--shadow);
+      align-items:center;
+      transform-origin: right bottom;
+      opacity: 0;
+      transform: translateY(12px) scale(0.98);
+      transition: transform 200ms cubic-bezier(.2,.9,.3,1), opacity 180ms ease;
+      pointer-events: auto;
+    }
+    .toast.show{ opacity:1; transform: translateY(0) scale(1); }
+
+    .avatar{
+      width:56px; height:56px; border-radius:50%; /* Circle avatar */
+      background: linear-gradient(135deg,#7289da,#5b6bd8);
+      display:flex; align-items:center; justify-content:center;
+      color:white; font-weight:700; font-size:20px; flex:0 0 56px;
+      box-shadow: 0 6px 14px rgba(0,0,0,0.35);
+    }
+
+    /* --- STYLE FOR THE INNER LOGO --- */
+    .nitro-logo-in-toast {
+      width: 40px;       
+      height: 40px;
+      object-fit: contain; 
+      margin-bottom: 6px; 
+      display: block;      
+    }
+
+    .content{ flex:1; min-width:0; }
+    .title-row{ display:flex; align-items:center; justify-content:space-between; gap:8px; }
+    .title{ font-weight:700; font-size:14px; color:var(--text); }
+    .time{ font-size:12px; color:var(--muted); font-weight:500; }
+
+    .msg{ margin-top:4px; color:var(--muted); font-size:14px; line-height:1.25; }
+
+    .actions{
+      display:flex;
+      gap:8px;
+      margin-left:8px;
+      align-items:center;
+    }
+    .btn{
+      padding:8px 10px;
+      border-radius:8px;
+      border:0;
+      cursor:pointer;
+      font-weight:600;
+      font-size:13px;
+    }
+    .accept{
+      background: linear-gradient(180deg,#43b581,#2c974b);
+      color:#fff;
+      box-shadow: 0 6px 14px rgba(67,181,129,0.16);
+    }
+    .accept:hover { background: #3ca374; }
+    
+    .decline{
+      background:transparent;
+      color:var(--muted);
+      border-radius:8px;
+      padding:6px 8px;
+    }
+    .decline:hover { text-decoration: underline; }
+
+    .close-x{
+      background:transparent;
+      border:0;
+      color:var(--muted);
+      cursor:pointer;
+      padding:6px;
+      border-radius:8px;
+    }
+
+    /* Small feedback animation when Accept pressed */
+    .accepted {
+      transform: translateY(-6px) scale(0.98);
+      opacity: 0.85;
+    }
+
+    /* Page helper text */
+    .meta{ margin-top:16px; color:var(--muted); font-size:13px }
+  </style>
+</head>
+<body>
+  <div class="demo">
+    <h2 style="margin:0 0 10px">You've got Nitro!</h2>
+    <p style="margin:0 0 14px;color:var(--muted)">Now you can use HD streaming, bigger file uploads, custom stickers, and more for 1 year.</p>
+    <button class="show-popup-btn" id="showPopup">Got it</button>
+    <div class="meta">ethan_thereal_one gifted you Nitro for 1 year</div>
+  </div>
+
+  <div class="toast-wrap" aria-live="polite" aria-atomic="true">
+    <div class="toast" id="toast" role="dialog" aria-label="Discord notification" aria-hidden="true">
+      <div class="avatar" aria-hidden="true">DN</div>
+      <div class="content">
+        
+        <img 
+          src="https://assets-global.website-files.com/6257adef93867e50d84d30e2/636e0a6cc3fa7ef2f1856742_5f972b931c3e061ff394017f_Discord-Logo-Roundicon.png" 
+          alt="Nitro Logo" 
+          class="nitro-logo-in-toast"
+        >
+        <div class="title-row">
+          <div class="title">Discord</div>
+          <div class="time">Now</div>
+        </div>
+        <div class="msg" id="toastMsg">You have Received Discord Nitro</div>
+      </div>
+
+      <div class="actions" style="display:flex;flex-direction:column;align-items:flex-end;justify-content:flex-start">
+        <button class="btn accept" id="acceptBtn" title="Accept">Accept</button>
+        <button class="btn decline" id="declineBtn" title="Decline">Decline</button>
+      </div>
+      <button class="close-x" id="closeBtn" aria-label="Close">✕</button>
+    </div>
+  </div>
+
+  <audio id="sadAudio" preload="auto" src="https://www.myinstants.com/media/sounds/sad-trombone.mp3"></audio>
+
+  <script>
+    const showPopupBtn = document.getElementById('showPopup');
+    const toast = document.getElementById('toast');
+    const toastMsg = document.getElementById('toastMsg');
+    const acceptBtn = document.getElementById('acceptBtn');
+    const declineBtn = document.getElementById('declineBtn');
+    const closeBtn = document.getElementById('closeBtn');
+    const sadAudio = document.getElementById('sadAudio');
+
+    // Show popup helper
+    function showToast() {
+      toast.classList.add('show');
+      toast.setAttribute('aria-hidden', 'false');
+      // auto-dismiss after 8s if user doesn't interact
+      clearTimeout(toast._timeout);
+      toast._timeout = setTimeout(hideToast, 8000);
+    }
+    function hideToast() {
+      toast.classList.remove('show');
+      toast.setAttribute('aria-hidden', 'true');
+      clearTimeout(toast._timeout);
+    }
+
+    showPopupBtn.addEventListener('click', () => {
+      // Reset message text (Fixed spelling)
+      toastMsg.textContent = "You have Received Discord Nitro";
+      showToast();
+      // focus Accept for quick keyboard action
+      setTimeout(() => acceptBtn.focus(), 180);
+    });
+
+    // Accept: play sad trombone and give visual feedback
+    acceptBtn.addEventListener('click', async (e) => {
+      // Play audio as a result of a user gesture
+      try {
+        sadAudio.currentTime = 0;
+        await sadAudio.play();
+      } catch (err) {
+        console.warn('Audio play failed:', err);
+      }
+
+      // small feedback: make toast look accepted, then close
+      toast.classList.add('accepted');
+      setTimeout(() => {
+        toast.classList.remove('accepted');
+        hideToast();
+      }, 700);
+    });
+
+    // Decline simply closes without sound
+    declineBtn.addEventListener('click', hideToast);
+    closeBtn.addEventListener('click', hideToast);
+
+    // ESC closes it
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') hideToast();
+      if ((e.key === 'Enter' || e.key === ' ') && document.activeElement === acceptBtn) {
+        acceptBtn.click();
+      }
+    });
+  </script>
+</body>
+</html>
